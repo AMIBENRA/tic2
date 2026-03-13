@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Actividad 1 – Postura Vocal</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --teal: #2ec4b6;
+    --teal-dark: #1a9e93;
+    --coral: #ff6b6b;
+    --amber: #ffd166;
+    --navy: #073b4c;
+    --navy-light: #118ab2;
+    --soft-bg: #f0f9f8;
+    --white: #ffffff;
+    --gray: #6b7280;
+    --gray-light: #e8f4f3;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: linear-gradient(135deg, #e0f7f5 0%, #b2ebe7 50%, #d4f1ef 100%);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* HEADER */
+  .header {
+    background: linear-gradient(120deg, var(--navy) 0%, var(--navy-light) 100%);
+    color: white;
+    padding: 28px 40px 22px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    box-shadow: 0 4px 20px rgba(7,59,76,0.25);
+  }
+  .header-badge {
+    background: var(--teal);
+    color: white;
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 900;
+    width: 60px; height: 60px;
+    border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    flex-shrink: 0;
+  }
+  .header-text h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.7rem;
+    font-weight: 900;
+    letter-spacing: -0.5px;
+  }
+  .header-text p {
+    font-size: 0.9rem;
+    opacity: 0.8;
+    margin-top: 3px;
+  }
+  .header-tag {
+    margin-left: auto;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 20px;
+    padding: 6px 16px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  /* INTRO CARD */
+  .intro-card {
+    background: var(--white);
+    border-radius: 20px;
+    margin: 30px 40px 10px;
+    padding: 24px 32px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    box-shadow: 0 4px 20px rgba(46,196,182,0.15);
+    border-left: 5px solid var(--teal);
+    animation: slideDown 0.5s ease;
+  }
+  .intro-icon { font-size: 2.5rem; flex-shrink: 0; }
+  .intro-card h2 { font-size: 1.15rem; font-weight: 800; color: var(--navy); margin-bottom: 4px; }
+  .intro-card p { font-size: 0.9rem; color: var(--gray); line-height: 1.5; }
+
+  /* MAIN LAYOUT */
+  .main {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 24px;
+    padding: 16px 40px 40px;
+    align-items: start;
+  }
+
+  /* BODY FIGURE */
+  .body-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .body-figure {
+    position: relative;
+    width: 260px;
+    height: 480px;
+  }
+  .body-svg { width: 100%; height: 100%; }
+
+  /* HOTSPOT BUTTONS */
+  .hotspot {
+    position: absolute;
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: var(--teal);
+    border: 3px solid white;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 900;
+    color: white;
+    box-shadow: 0 3px 12px rgba(46,196,182,0.5);
+    transition: all 0.25s ease;
+    z-index: 10;
+    animation: pulse 2s infinite;
+  }
+  .hotspot:hover { transform: scale(1.2); background: var(--teal-dark); animation: none; }
+  .hotspot.active { background: var(--coral); animation: none; transform: scale(1.15); }
+  .hotspot.done { background: #22c55e; animation: none; }
+
+  @keyframes pulse {
+    0%,100% { box-shadow: 0 3px 12px rgba(46,196,182,0.5); }
+    50% { box-shadow: 0 3px 24px rgba(46,196,182,0.9), 0 0 0 8px rgba(46,196,182,0.15); }
+  }
+
+  /* hotspot positions */
+  #h-cabeza    { top: 28px; left: 50%; transform: translateX(-50%); }
+  #h-mandibula { top: 88px; left: 68%; }
+  #h-hombros   { top: 145px; left: 50%; transform: translateX(-50%); }
+  #h-pecho     { top: 215px; left: 70%; }
+  #h-abdomen   { top: 285px; left: 65%; }
+  #h-pies      { top: 430px; left: 50%; transform: translateX(-50%); }
+
+  /* PANEL */
+  .panel-area {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .instruction-tip {
+    background: var(--amber);
+    border-radius: 14px;
+    padding: 14px 18px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--navy);
+    box-shadow: 0 3px 10px rgba(255,209,102,0.4);
+  }
+
+  .info-card {
+    background: var(--white);
+    border-radius: 18px;
+    padding: 24px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+    min-height: 260px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+  .info-card.default .big-emoji { font-size: 4rem; margin-bottom: 12px; }
+  .info-card.default h3 { color: var(--gray); font-size: 1rem; font-weight: 700; }
+  .info-card.default p { color: #9ca3af; font-size: 0.85rem; margin-top: 6px; }
+
+  .info-card.active {
+    text-align: left;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+  .card-zone-label {
+    font-size: 0.7rem;
+    font-weight: 900;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 6px;
+  }
+  .card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 14px;
+  }
+  .card-section {
+    background: #f0fdf9;
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    width: 100%;
+    border-left: 4px solid var(--teal);
+  }
+  .card-section.bad { border-left-color: var(--coral); background: #fff5f5; }
+  .section-label {
+    font-size: 0.75rem;
+    font-weight: 900;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .section-label.good { color: var(--teal-dark); }
+  .section-label.bad { color: var(--coral); }
+  .section-text { font-size: 0.88rem; color: var(--navy); line-height: 1.5; font-weight: 600; }
+  .tip-box {
+    background: linear-gradient(120deg, #fffbeb, #fef3c7);
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 0.82rem;
+    color: #92400e;
+    font-weight: 700;
+    width: 100%;
+    border: 1px solid #fde68a;
+    display: flex; gap: 8px; align-items: flex-start;
+  }
+
+  /* PROGRESS */
+  .progress-bar-wrap {
+    background: white;
+    border-radius: 14px;
+    padding: 16px 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+  }
+  .progress-label { font-size: 0.8rem; font-weight: 700; color: var(--gray); margin-bottom: 8px; display: flex; justify-content: space-between; }
+  .progress-bar { height: 8px; background: var(--gray-light); border-radius: 4px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--teal), var(--teal-dark)); border-radius: 4px; transition: width 0.5s ease; width: 0%; }
+  .zone-dots { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+  .zone-dot {
+    width: 28px; height: 28px;
+    border-radius: 8px;
+    background: var(--gray-light);
+    font-size: 1rem;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.3s;
+  }
+  .zone-dot.done { background: #dcfce7; }
+
+  /* SUCCESS */
+  .success-banner {
+    background: linear-gradient(120deg, #22c55e, #16a34a);
+    color: white;
+    border-radius: 18px;
+    padding: 20px 24px;
+    text-align: center;
+    display: none;
+    animation: bounceIn 0.5s ease;
+    box-shadow: 0 6px 20px rgba(34,197,94,0.4);
+  }
+  .success-banner h3 { font-family: 'Playfair Display', serif; font-size: 1.4rem; margin-bottom: 6px; }
+  .success-banner p { font-size: 0.88rem; opacity: 0.9; }
+
+  @keyframes slideDown { from { opacity:0; transform: translateY(-20px);} to { opacity:1; transform: translateY(0);} }
+  @keyframes bounceIn { 0% { transform: scale(0.8); opacity:0;} 80% { transform: scale(1.05);} 100% { transform: scale(1); opacity:1;} }
+  @keyframes fadeIn { from {opacity:0; transform:translateY(10px);} to {opacity:1; transform:translateY(0);} }
+  .animate-in { animation: fadeIn 0.35s ease; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-badge">1</div>
+  <div class="header-text">
+    <h1>Tu cuerpo habla antes que tu voz</h1>
+    <p>Higiene y Postura Vocal · Disfonia Funcional por Sobrecarga Vocal</p>
+  </div>
+  <div class="header-tag">🧍 Postura</div>
+</div>
+
+<div class="intro-card">
+  <div class="intro-icon">👆</div>
+  <div>
+    <h2>¿Cómo usar esta actividad?</h2>
+    <p>Haz clic sobre cada <strong>punto de la figura</strong> para descubrir cómo debe estar tu cuerpo cuando hablas en clase. Explora las 6 zonas para completar la actividad.</p>
+  </div>
+</div>
+
+<div class="main">
+  <!-- BODY FIGURE -->
+  <div class="body-container">
+    <div class="body-figure">
+      <!-- SVG cuerpo humano simplificado -->
+      <svg class="body-svg" viewBox="0 0 260 480" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="bodyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#c7f2ef"/>
+            <stop offset="100%" style="stop-color:#9de8e2"/>
+          </linearGradient>
+          <filter id="shadow"><feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="rgba(7,59,76,0.15)"/></filter>
+        </defs>
+        <!-- Cuerpo base -->
+        <g filter="url(#shadow)">
+          <!-- Cabeza -->
+          <ellipse cx="130" cy="55" rx="40" ry="46" fill="url(#bodyGrad)" stroke="#2ec4b6" stroke-width="2"/>
+          <!-- Cuello -->
+          <rect x="115" y="96" width="30" height="28" rx="8" fill="url(#bodyGrad)" stroke="#2ec4b6" stroke-width="1.5"/>
+          <!-- Torso -->
+          <path d="M75 124 Q65 140 68 200 Q70 260 80 310 L180 310 Q190 260 192 200 Q195 140 185 124 Z" fill="url(#bodyGrad)" stroke="#2ec4b6" stroke-width="2"/>
+          <!-- Hombros -->
+          <ellipse cx="72" cy="140" rx="22" ry="14" fill="url(#bodyGrad)" stroke="#2ec4b6" stroke-width="1.5"/>
+          <ellipse cx="188" cy="140" rx="22" ry="14" fill="url(#bodyGrad)" stroke="#2ec4b6" stroke-width="1.5"/>
+          <!-- Brazos -->
+          <path d="M55 140 Q40 180 42 230 Q44 250 55 260 Q65 255 68 230 Q70 185 72 145 Z" fill="url(#bodyGrad)" stroke="#2ec4b6" stroke-width="1.5"/>
+          <path d="M205 140 Q220 180 218 230 Q216 250 205 260 Q195 255 192 230 Q190 185 188 145 Z" fill="url(#bodyGrad)" stroke="#2ec4b6" stroke-width="1.5"/>
+          <!-- Manos -->
+          <ellipse cx="50" cy="265" rx="14" ry="18" fill="url(#bodyGrad)" stroke="#2ec4b6" stroke-width="1.5"/>
+          <ellipse cx="210" cy="265" rx="14" ry="18" fill="url(#bodyGrad)" stroke="#2ec4b6" stroke-width="1.5"/>
+          <!-- Piernas -->
+          <path d="M80 308 Q75 360 77 420 Q78 440 95 442 Q112 440 113 420 Q115 360 115 310 Z" fill="url(#bodyGrad)" stroke="#2ec4b6" stroke-width="1.5"/>
+          <path d="M180 308 Q185 360 183 420 Q182 440 165 442 Q148 440 147 420 Q145 360 145 310 Z" fill="url(#bodyGrad)" stroke="#2ec4b6" stroke-width="1.5"/>
+          <!-- Pies -->
+          <ellipse cx="96" cy="450" rx="24" ry="10" fill="url(#bodyGrad)" stroke="#2ec4b6" stroke-width="1.5"/>
+          <ellipse cx="164" cy="450" rx="24" ry="10" fill="url(#bodyGrad)" stroke="#2ec4b6" stroke-width="1.5"/>
+        </g>
+        <!-- Marcadores de zonas (líneas guía) -->
+        <line x1="175" y1="55" x2="198" y2="55" stroke="#2ec4b6" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.6"/>
+        <line x1="175" y1="100" x2="198" y2="100" stroke="#2ec4b6" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.6"/>
+        <line x1="180" y1="148" x2="210" y2="148" stroke="#2ec4b6" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.6"/>
+        <line x1="185" y1="218" x2="210" y2="218" stroke="#2ec4b6" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.6"/>
+        <line x1="182" y1="288" x2="205" y2="288" stroke="#2ec4b6" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.6"/>
+        <line x1="165" y1="455" x2="195" y2="455" stroke="#2ec4b6" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.6"/>
+      </svg>
+
+      <!-- HOTSPOTS -->
+      <button class="hotspot" id="h-cabeza"    onclick="showInfo('cabeza')"   title="Cabeza">👁️</button>
+      <button class="hotspot" id="h-mandibula" onclick="showInfo('mandibula')" title="Mandíbula">😮</button>
+      <button class="hotspot" id="h-hombros"   onclick="showInfo('hombros')"  title="Hombros">↔️</button>
+      <button class="hotspot" id="h-pecho"     onclick="showInfo('pecho')"    title="Pecho">❤️</button>
+      <button class="hotspot" id="h-abdomen"   onclick="showInfo('abdomen')"  title="Abdomen">🫁</button>
+      <button class="hotspot" id="h-pies"      onclick="showInfo('pies')"     title="Pies">👟</button>
+    </div>
+  </div>
+
+  <!-- PANEL DERECHO -->
+  <div class="panel-area">
+    <div class="instruction-tip">
+      <span>💡</span>
+      <span>Haz clic en cada punto brillante del cuerpo para ver la postura correcta</span>
+    </div>
+
+    <!-- CARTA DE INFO -->
+    <div class="info-card default" id="infoCard">
+      <div class="big-emoji">🎯</div>
+      <h3>Selecciona una zona del cuerpo</h3>
+      <p>Hay 6 zonas clave para explorar. ¡Descúbrelas todas!</p>
+    </div>
+
+    <!-- PROGRESO -->
+    <div class="progress-bar-wrap">
+      <div class="progress-label">
+        <span>Zonas exploradas</span>
+        <span id="progressText">0 / 6</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+      <div class="zone-dots" id="zoneDots">
+        <div class="zone-dot" data-zone="cabeza"    title="Cabeza">👁️</div>
+        <div class="zone-dot" data-zone="mandibula" title="Mandíbula">😮</div>
+        <div class="zone-dot" data-zone="hombros"   title="Hombros">↔️</div>
+        <div class="zone-dot" data-zone="pecho"     title="Pecho">❤️</div>
+        <div class="zone-dot" data-zone="abdomen"   title="Abdomen">🫁</div>
+        <div class="zone-dot" data-zone="pies"      title="Pies">👟</div>
+      </div>
+    </div>
+
+    <!-- SUCCESS -->
+    <div class="success-banner" id="successBanner">
+      <h3>🎉 ¡Has explorado toda la postura vocal!</h3>
+      <p>Practica esta comprobación <strong>30 segundos antes de cada clase</strong>.<br>Cabeza · Hombros · Abdomen · ¡Voz protegida!</p>
+    </div>
+  </div>
+</div>
+
+<script>
+const data = {
+  cabeza: {
+    zone: "CABEZA Y CUELLO",
+    title: "Posición de la cabeza",
+    good: "Mirada al frente, cabeza neutral. Las orejas alineadas con los hombros. El cuello largo y sin tensión.",
+    bad: "Cabeza adelantada («cabeza de tortuga»): comprime la laringe y crea tensión en las cuerdas vocales.",
+    tip: "💡 Si trabajas con pizarra digital, evita girar el cuello para hablar. Gira todo el cuerpo.",
+    emoji: "👁️"
+  },
+  mandibula: {
+    zone: "MANDÍBULA Y BOCA",
+    title: "Mandíbula relajada",
+    good: "Mandíbula suelta, dientes sin apretar, labios ligeramente separados. La boca se abre con naturalidad al hablar.",
+    bad: "Tensión mandibular: bloquea la resonancia, endurece la voz y genera fatiga más rápidamente.",
+    tip: "💡 Truco: bosteza silenciosamente antes de empezar clase. Relaja mandíbula y faringe al instante.",
+    emoji: "😮"
+  },
+  hombros: {
+    zone: "HOMBROS Y ESPALDA ALTA",
+    title: "Hombros bajos y abiertos",
+    good: "Hombros caídos, separados y hacia atrás. Espalda alta abierta. Sensación de amplitud en el pecho.",
+    bad: "Hombros encogidos = tensión cervical = voz apretada y timbrada. Error muy común al hablar en voz alta.",
+    tip: "💡 Rutina exprés: sube los hombros hasta las orejas, aguanta 3 seg., suéltalos. Repite 2 veces.",
+    emoji: "↔️"
+  },
+  pecho: {
+    zone: "PECHO Y TÓRAX",
+    title: "Pecho ligeramente abierto",
+    good: "Esternón elevado con naturalidad. Pecho abierto pero sin exagerar. Favorece la resonancia torácica.",
+    bad: "Pecho hundido = menos soporte respiratorio = más tensión en la laringe para proyectar la voz.",
+    tip: "💡 Imagina que llevas una medalla en el pecho. Esa es la posición correcta.",
+    emoji: "❤️"
+  },
+  abdomen: {
+    zone: "ABDOMEN Y DIAFRAGMA",
+    title: "Vientre suave y activo",
+    good: "Vientre suave, preparado para moverse al respirar. No contraído. Es el «motor» de la fonación.",
+    bad: "Vientre constantemente tenso = respiración alta = voz sin soporte = fatiga al final del día.",
+    tip: "💡 Pon la mano en el abdomen mientras hablas. Debe moverse suavemente hacia fuera al inspirar.",
+    emoji: "🫁"
+  },
+  pies: {
+    zone: "PIES Y BASE",
+    title: "Base estable en el suelo",
+    good: "Pies apoyados en el suelo, peso repartido entre los dos. Ligera separación (anchura de cadera).",
+    bad: "Cruzar las piernas o apoyar el peso en un solo lado desequilibra la postura y añade tensión corporal.",
+    tip: "💡 «Planta» los pies antes de hablar. La estabilidad de la base se transmite a la voz.",
+    emoji: "👟"
+  }
+};
+
+const visited = new Set();
+
+function showInfo(zone) {
+  const d = data[zone];
+  const card = document.getElementById('infoCard');
+
+  // Mark hotspot
+  document.querySelectorAll('.hotspot').forEach(h => h.classList.remove('active'));
+  document.getElementById('h-' + zone).classList.add('active');
+
+  // Update card
+  card.className = 'info-card active animate-in';
+  card.innerHTML = `
+    <div class="card-zone-label">${d.emoji} ${d.zone}</div>
+    <div class="card-title">${d.title}</div>
+    <div class="card-section">
+      <div class="section-label good">✅ Correcto</div>
+      <div class="section-text">${d.good}</div>
+    </div>
+    <div class="card-section bad">
+      <div class="section-label bad">❌ Error frecuente</div>
+      <div class="section-text">${d.bad}</div>
+    </div>
+    <div class="tip-box">💡 ${d.tip.replace('💡 ', '')}</div>
+  `;
+
+  // Track progress
+  if (!visited.has(zone)) {
+    visited.add(zone);
+    document.getElementById('h-' + zone).classList.remove('active');
+    document.getElementById('h-' + zone).classList.add('done');
+
+    // Update dot
+    document.querySelector(`.zone-dot[data-zone="${zone}"]`).classList.add('done');
+
+    // Update progress bar
+    const pct = (visited.size / 6) * 100;
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressText').textContent = visited.size + ' / 6';
+
+    if (visited.size === 6) {
+      document.getElementById('successBanner').style.display = 'block';
+    }
+  }
+}
+</script>
+</body>
+</html>
