@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Actividad 3 – La Pausa como Herramienta</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --purple: #7c3aed;
+    --purple-light: #a78bfa;
+    --purple-pale: #ede9fe;
+    --teal: #2ec4b6;
+    --green: #22c55e;
+    --amber: #f59e0b;
+    --red: #ef4444;
+    --navy: #1e1b4b;
+    --white: #ffffff;
+    --gray: #6b7280;
+    --bg: #f5f3ff;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 40%, #c7f2ef 100%);
+    min-height: 100vh;
+  }
+
+  .header {
+    background: linear-gradient(120deg, #4c1d95 0%, #7c3aed 100%);
+    color: white;
+    padding: 26px 40px 20px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    box-shadow: 0 4px 20px rgba(76,29,149,0.3);
+  }
+  .header-badge {
+    background: var(--teal);
+    color: white;
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 900;
+    width: 60px; height: 60px;
+    border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  }
+  .header-text h1 { font-family: 'Playfair Display', serif; font-size: 1.7rem; font-weight: 900; }
+  .header-text p { font-size: 0.88rem; opacity: 0.8; margin-top: 3px; }
+  .header-tag {
+    margin-left: auto;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 20px;
+    padding: 6px 16px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .content { padding: 28px 40px 40px; max-width: 1020px; margin: 0 auto; }
+
+  /* INTRO */
+  .intro-card {
+    background: white;
+    border-radius: 18px;
+    padding: 20px 28px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    box-shadow: 0 4px 18px rgba(124,58,237,0.12);
+    border-left: 5px solid var(--purple);
+  }
+  .intro-card .emoji { font-size: 2.8rem; flex-shrink: 0; }
+  .intro-card h2 { font-size: 1rem; font-weight: 900; color: var(--navy); margin-bottom: 5px; }
+  .intro-card p { font-size: 0.88rem; color: var(--gray); line-height: 1.5; }
+
+  /* LEVEL BADGE */
+  .level-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .level-badge {
+    background: linear-gradient(120deg, var(--purple), #a855f7);
+    color: white;
+    border-radius: 20px;
+    padding: 6px 18px;
+    font-size: 0.8rem;
+    font-weight: 900;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .level-desc { font-size: 0.85rem; color: var(--gray); font-weight: 600; }
+
+  /* PROGRESS */
+  .progress-top {
+    background: white;
+    border-radius: 14px;
+    padding: 14px 20px;
+    margin-bottom: 22px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+  }
+  .progress-label { font-size: 0.82rem; font-weight: 700; color: var(--gray); white-space: nowrap; }
+  .progress-bar { flex: 1; height: 8px; background: #e5e7eb; border-radius: 4px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--purple), var(--teal)); border-radius: 4px; transition: width 0.6s ease; width: 0%; }
+  .progress-count { font-size: 0.85rem; font-weight: 900; color: var(--purple); white-space: nowrap; }
+
+  /* FLIPCARDS GRID */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-bottom: 28px;
+  }
+
+  .flip-wrap {
+    perspective: 1000px;
+    height: 200px;
+    cursor: pointer;
+  }
+  .flip-inner {
+    position: relative;
+    width: 100%; height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.55s ease;
+  }
+  .flip-wrap.flipped .flip-inner { transform: rotateY(180deg); }
+
+  .flip-front, .flip-back {
+    position: absolute;
+    width: 100%; height: 100%;
+    border-radius: 18px;
+    backface-visibility: hidden;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  }
+
+  .flip-front {
+    background: white;
+    border: 3px solid var(--purple-pale);
+  }
+  .flip-front:hover { border-color: var(--purple-light); }
+
+  .flip-back { transform: rotateY(180deg); }
+  .flip-back.ok { background: linear-gradient(135deg, #f0fdf4, #dcfce7); border: 3px solid #86efac; }
+  .flip-back.warn { background: linear-gradient(135deg, #fffbeb, #fef3c7); border: 3px solid #fcd34d; }
+  .flip-back.alert { background: linear-gradient(135deg, #fff7ed, #ffedd5); border: 3px solid #fdba74; }
+
+  .card-front-top {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .card-num {
+    background: var(--purple);
+    color: white;
+    width: 28px; height: 28px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.8rem;
+    font-weight: 900;
+    flex-shrink: 0;
+  }
+  .card-phrase { font-size: 0.82rem; font-weight: 700; color: var(--navy); line-height: 1.4; font-style: italic; }
+  .card-front-hint {
+    font-size: 0.7rem;
+    color: var(--purple-light);
+    font-weight: 700;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+  }
+
+  .card-back-label {
+    font-size: 0.7rem;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .card-back-label.ok { color: #15803d; }
+  .card-back-label.warn { color: #b45309; }
+  .card-back-label.alert { color: #c2410c; }
+  .card-back-text { font-size: 0.8rem; color: #374151; line-height: 1.5; font-weight: 600; flex: 1; }
+  .card-back-tip { font-size: 0.75rem; color: #6b7280; font-style: italic; margin-top: 6px; }
+
+  /* SUMMARY */
+  .summary-section {
+    background: linear-gradient(120deg, #4c1d95, #7c3aed);
+    border-radius: 22px;
+    padding: 28px 32px;
+    color: white;
+    margin-bottom: 20px;
+    display: none;
+    animation: bounceIn 0.5s ease;
+  }
+  .summary-title { font-family: 'Playfair Display', serif; font-size: 1.5rem; margin-bottom: 6px; }
+  .summary-sub { font-size: 0.88rem; opacity: 0.8; margin-bottom: 22px; }
+  .rules-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .rule-card {
+    background: rgba(255,255,255,0.12);
+    border: 2px solid rgba(255,255,255,0.2);
+    border-radius: 16px;
+    padding: 18px 16px;
+    text-align: center;
+  }
+  .rule-icon { font-size: 2rem; margin-bottom: 8px; }
+  .rule-text { font-size: 0.82rem; font-weight: 700; line-height: 1.4; }
+
+  .final-cta {
+    background: rgba(255,255,255,0.15);
+    border-radius: 14px;
+    padding: 16px 20px;
+    margin-top: 18px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-align: center;
+    border: 2px dashed rgba(255,255,255,0.35);
+  }
+
+  /* FLIP HINT */
+  .flip-hint {
+    background: white;
+    border-radius: 12px;
+    padding: 10px 18px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--purple);
+    box-shadow: 0 2px 8px rgba(124,58,237,0.1);
+  }
+  .hint-anim { animation: wiggle 1.5s infinite; display: inline-block; }
+  @keyframes wiggle { 0%,100%{transform:rotate(-10deg);} 50%{transform:rotate(10deg);} }
+
+  @keyframes bounceIn { 0%{transform:scale(0.85);opacity:0;} 80%{transform:scale(1.03);} 100%{transform:scale(1);opacity:1;} }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(10px);} to{opacity:1;transform:translateY(0);} }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-badge">3</div>
+  <div class="header-text">
+    <h1>La pausa es parte del discurso</h1>
+    <p>Generalización a Situaciones Reales de Aula · Disfonia Funcional por Sobrecarga Vocal</p>
+  </div>
+  <div class="header-tag">⏱️ Respiración Niv. 2</div>
+</div>
+
+<div class="content">
+  <div class="intro-card">
+    <div class="emoji">🏫</div>
+    <div>
+      <h2>¿Cuándo para una buena docente vocal? ¡Ahora lo descubrirás!</h2>
+      <p>Encontrarás frases típicas de aula. <strong>Haz clic en cada tarjeta</strong> para descubrir dónde hacer la pausa respiratoria, por qué es necesaria y cómo protege tu voz. Explora las 6 situaciones.</p>
+    </div>
+  </div>
+
+  <div class="level-row">
+    <div class="level-badge">⭐⭐ Nivel 2</div>
+    <div class="level-desc">Práctica + Generalización al contexto de aula</div>
+  </div>
+
+  <div class="progress-top">
+    <div class="progress-label">Tarjetas exploradas</div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-count" id="progressCount">0 / 6</div>
+  </div>
+
+  <div class="flip-hint">
+    <span class="hint-anim">👆</span>
+    Haz clic en cualquier tarjeta para girarla y ver el análisis vocal
+  </div>
+
+  <!-- FLIPCARDS -->
+  <div class="cards-grid">
+
+    <!-- Tarjeta 1 -->
+    <div class="flip-wrap" id="fc1" onclick="flipCard(1)">
+      <div class="flip-inner">
+        <div class="flip-front">
+          <div class="card-front-top">
+            <div class="card-num">1</div>
+            <div class="card-phrase">«Abrid el libro por la página veinticuatro y leed en silencio hasta que yo os diga.»</div>
+          </div>
+          <div class="card-front-hint"><span class="hint-anim">🔄</span> Clic para ver análisis</div>
+        </div>
+        <div class="flip-back ok">
+          <div class="card-back-label ok">✅ Pausa recomendada</div>
+          <div class="card-back-text">Haz pausa después de <strong>«veinticuatro»</strong>. Recarga aire antes de «leed». Las frases largas necesitan <strong>mínimo 2 pausas</strong>. Cada coma o final de grupo semántico es una oportunidad para respirar.</div>
+          <div class="card-back-tip">💡 Frase en 2 partes = 2 respiraciones</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tarjeta 2 -->
+    <div class="flip-wrap" id="fc2" onclick="flipCard(2)">
+      <div class="flip-inner">
+        <div class="flip-front">
+          <div class="card-front-top">
+            <div class="card-num">2</div>
+            <div class="card-phrase">«¡Muy bien, lo habéis hecho genial! Ahora vamos a corregir el ejercicio entre todos.»</div>
+          </div>
+          <div class="card-front-hint"><span class="hint-anim">🔄</span> Clic para ver análisis</div>
+        </div>
+        <div class="flip-back ok">
+          <div class="card-back-label ok">✅ Aprovecha el ritmo</div>
+          <div class="card-back-text">Haz pausa entre <strong>«¡genial!»</strong> y <strong>«Ahora»</strong>. La exclamación es tu señal natural para inspirar. El entusiasmo no riñe con la buena técnica vocal — al contrario, las pausas le dan más fuerza.</div>
+          <div class="card-back-tip">💡 Exclamación = señal de pausa y respiración</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tarjeta 3 -->
+    <div class="flip-wrap" id="fc3" onclick="flipCard(3)">
+      <div class="flip-inner">
+        <div class="flip-front">
+          <div class="card-front-top">
+            <div class="card-num">3</div>
+            <div class="card-phrase">«Necesito que estéis en silencio porque hay mucho trabajo y vamos justos de tiempo.»</div>
+          </div>
+          <div class="card-front-hint"><span class="hint-anim">🔄</span> Clic para ver análisis</div>
+        </div>
+        <div class="flip-back warn">
+          <div class="card-back-label warn">⚠️ Frase de riesgo</div>
+          <div class="card-back-text">Frase larga con <strong>carga emocional alta</strong>: error frecuente. Divídela siempre en dos: pausa después de «silencio» // y de nuevo antes de «vamos justos». La prisa y el estrés son los principales enemigos de la pausa vocal.</div>
+          <div class="card-back-tip">💡 Más estrés = más necesitas la pausa. Hazla aunque cueste.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tarjeta 4 -->
+    <div class="flip-wrap" id="fc4" onclick="flipCard(4)">
+      <div class="flip-inner">
+        <div class="flip-front">
+          <div class="card-front-top">
+            <div class="card-num">4</div>
+            <div class="card-phrase">«¿Quién quiere salir a la pizarra?»</div>
+          </div>
+          <div class="card-front-hint"><span class="hint-anim">🔄</span> Clic para ver análisis</div>
+        </div>
+        <div class="flip-back ok">
+          <div class="card-back-label ok">✅ Frase corta eficiente</div>
+          <div class="card-back-text">Frase corta = una sola inspiración previa es suficiente. <strong>Aprovecha el silencio del alumnado</strong> para recuperar el aire antes de continuar. El momento de espuesta del grupo es tu pausa natural.</div>
+          <div class="card-back-tip">💡 El silencio del aula = tu recuperación vocal</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tarjeta 5 -->
+    <div class="flip-wrap" id="fc5" onclick="flipCard(5)">
+      <div class="flip-inner">
+        <div class="flip-front">
+          <div class="card-front-top">
+            <div class="card-num">5</div>
+            <div class="card-phrase">«Primero hacéis el ejercicio A, después el B, y al final ponéis vuestro nombre.»</div>
+          </div>
+          <div class="card-front-hint"><span class="hint-anim">🔄</span> Clic para ver análisis</div>
+        </div>
+        <div class="flip-back warn">
+          <div class="card-back-label warn">⚠️ Secuencia de instrucciones</div>
+          <div class="card-back-text">Las instrucciones en lista son un riesgo vocal silencioso. Necesitas <strong>3 pausas</strong>: antes de «Primero» // después de «A» // después de «B». <strong>Cada elemento de lista = nueva respiración</strong>. También puedes apoyarte en la pizarra para reducir la carga verbal.</div>
+          <div class="card-back-tip">💡 Usa la pizarra o un gesto visual para reforzar sin hablar de más.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tarjeta 6 -->
+    <div class="flip-wrap" id="fc6" onclick="flipCard(6)">
+      <div class="flip-inner">
+        <div class="flip-front">
+          <div class="card-front-top">
+            <div class="card-num">6</div>
+            <div class="card-phrase"><em>[El ruido del aula sube. Elevas la voz para que te escuchen.]</em></div>
+          </div>
+          <div class="card-front-hint"><span class="hint-anim">🔄</span> Clic para ver análisis</div>
+        </div>
+        <div class="flip-back alert">
+          <div class="card-back-label alert">🚨 Señal de alerta STOP</div>
+          <div class="card-back-text">Elevar la intensidad por encima del ruido ambiental es la <strong>principal causa de sobrecarga vocal docente</strong>. Cuando notes este patrón: <strong>PARA. Pausa. Bebe un sorbo de agua. Usa un gesto visual</strong> para pedir silencio. Si está disponible, usa el micrófono de aula.</div>
+          <div class="card-back-tip">💡 Competir con el ruido siempre pierde la voz. Gestiona el silencio antes de hablar.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- SUMMARY (aparece cuando se completan todas) -->
+  <div class="summary-section" id="summarySection">
+    <div class="summary-title">🏆 Las 3 reglas de oro de la pausa vocal en el aula</div>
+    <div class="summary-sub">Has completado todas las situaciones. Aquí tienes el resumen que puedes usar como recordatorio diario:</div>
+    <div class="rules-grid">
+      <div class="rule-card">
+        <div class="rule-icon">🔴</div>
+        <div class="rule-text">Frase larga → <strong>siempre 2 pausas como mínimo</strong></div>
+      </div>
+      <div class="rule-card">
+        <div class="rule-icon">🟡</div>
+        <div class="rule-text">Silencio del alumnado → <strong>aprovecha para respirar</strong></div>
+      </div>
+      <div class="rule-card">
+        <div class="rule-icon">🟢</div>
+        <div class="rule-text">Elevar la voz sobre el ruido → <strong>señal de STOP: para y gestiona</strong></div>
+      </div>
+    </div>
+    <div class="final-cta">
+      🎯 <strong>Objetivo superado:</strong> Ya conoces las pausas que protegen tu voz. Aplícalas mañana mismo en clase.
+    </div>
+  </div>
+</div>
+
+<script>
+let flipped = new Set();
+
+function flipCard(n) {
+  const wrap = document.getElementById('fc' + n);
+  wrap.classList.toggle('flipped');
+
+  if (!flipped.has(n)) {
+    flipped.add(n);
+    updateProgress();
+  }
+}
+
+function updateProgress() {
+  const count = flipped.size;
+  const pct = (count / 6) * 100;
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressCount').textContent = count + ' / 6';
+
+  if (count === 6) {
+    setTimeout(() => {
+      const summary = document.getElementById('summarySection');
+      summary.style.display = 'block';
+      summary.scrollIntoView({ behavior: 'smooth' });
+    }, 600);
+  }
+}
+</script>
+</body>
+</html>
